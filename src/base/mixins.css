@@ -1,0 +1,21 @@
+@define-mixin flexbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@define-mixin svg {
+  padding: 12px;
+  width: 18px;
+  height: 18px;
+  vertical-align: -0.15em;
+  fill: #606974;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+@define-mixin bg $url {
+  background-image: url($(url));
+  background-size: cover;
+}
