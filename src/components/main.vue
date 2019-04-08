@@ -21,7 +21,10 @@
             </div>
           </div>
           <div :class="[$style.cardbody, $style.textwrap]">
-            <div v-text="item.nickname"></div>
+            <div
+              v-text="item.nickname"
+              @click="getArticleList(item.nickname)"
+            ></div>
             <span :class="$style.textbubble">公众号名称</span>
           </div>
           <div :class="[$style.cardfooter, $style.textwrap]">
@@ -44,6 +47,7 @@ export default {
   },
   computed: {
     list() {
+      console.log(this.$store.state.aa, 'aa')
       return (this.gzh.gzhs_list_data = this.$store.state.ls);
     }
   },
@@ -52,6 +56,11 @@ export default {
       n = o;
     }
   },
+  methods: {
+    getArticleList(nickname) {
+      this.$socket.emit('emit_nickname', nickname)
+    }
+  }
 }
 </script>
 
