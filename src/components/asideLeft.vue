@@ -8,7 +8,7 @@
     </svg>
 
     <svg
-      :class="{[$style.icon]:1,[$style.iconbig]:1}"
+      :class="$style.icon"
       aria-hidden="true"
     >
       <use xlink:href="#icon-spider"></use>

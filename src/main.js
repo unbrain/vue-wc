@@ -11,15 +11,14 @@ const store = new Vuex.Store({
   state: {
     count: 0,
     ls: {},
-    aa: {}
+    allArticles: {}
   },
   actions: {
     SOCKET_gzhs_list_data(state, data) {
       state.state.ls = data;
     },
-    SOCKET_gzhs_allArticles_data(state, data) {
-      window.console.log(data, 'dasda')
-      state.state.aa = data;
+    SOCKET_gzhs_all_articles_data(state, data) {
+      state.state.allArticles = data;
     }
   }
 })

@@ -1,10 +1,16 @@
 <template>
   <div :class="$style.main">
     <div :class="$style.mask">
-      <div>
-
-      </div>
+      <svg
+        :class="[$style.icon,$style.iconbig,$style.return]"
+        aria-hidden="true"
+        v-show="!show"
+        @click="show=!show"
+      >
+        <use xlink:href="#icon-return"></use>
+      </svg>
       <div
+        v-show="show"
         v-for="(item, index) in gzh.gzhs_list_data.data"
         :key="index"
         :class="$style.cardwrap"
@@ -33,7 +39,91 @@
           </div>
         </div>
       </div>
+      <div
+        v-show="!show"
+        v-for="(item,index) in  this.$store.state.allArticles.articles"
+        :key="item.content_url"
+        :class="[$style.cardwrap,$style.articlecard]"
+      >
+        <div :class="$style.card">
+          <div :class="$style.cardtitle">
+            <div :class="[$style.titlenum, $style.textwrap]">
+              <div v-text="index+1"></div>
+              <span :class="$style.textbubble">index</span>
+            </div>
+            <div :class="$style.textwrap">
+              <div v-text="item.p_date"></div>
+              <span :class="$style.textbubble">发布时间</span>
+            </div>
+          </div>
+          <div :class="[$style.cardbody, $style.textwrap]">
+            <div
+              v-text="item.title"
+              :class="$style.articletextwrap"
+            ></div>
+            <span
+              :class="$style.textbubble"
+              v-text="item.title"
+            ></span>
+          </div>
+          <div :class="$style.articlefooterwrap">
+            <div :class="[$style.articlefooter, $style.textwrap]">
 
+            </div>
+            <div :class="[$style.articlefooter, $style.textwrap]">
+              <svg
+                :class="{[$style.icon]:1,[$style.iconbig]:1}"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-look"></use>
+              </svg>
+              <div v-text="item.read_num"></div>
+              <span :class="$style.textbubble">阅读量</span>
+            </div>
+            <div :class="[$style.articlefooter, $style.textwrap]">
+              <svg
+                :class="{[$style.icon]:1,[$style.iconbig]:1}"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-money"></use>
+              </svg>
+              <div v-text="item.reward_num"></div>
+              <span :class="$style.textbubble">赞赏量</span>
+            </div>
+            <div :class="[$style.articlefooter, $style.textwrap]">
+              <svg
+                :class="{[$style.icon]:1,[$style.iconbig]:1}"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-comment"></use>
+              </svg>
+              <div v-text="item.comment_num"></div>
+              <span :class="$style.textbubble">评论量</span>
+            </div>
+            <div :class="[$style.articlefooter, $style.textwrap]">
+              <svg
+                :class="{[$style.icon]:1,[$style.iconbig]:1}"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-like"></use>
+              </svg>
+              <div v-text="item.like_num"></div>
+              <span :class="$style.textbubble">点赞量</span>
+            </div>
+            <div :class="[$style.articlefooter, $style.textwrap]">
+              <svg
+                :class="{[$style.icon]:1,[$style.iconbig]:1}"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-author"></use>
+              </svg>
+              <div v-text="item.author"></div>
+              <span :class="$style.textbubble">作者</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -42,23 +132,25 @@
 export default {
   data() {
     return {
-      gzh: { phone_crawler_data: [], gzhs_list_data: [] },
+      gzh: { gzh_all_article_data: [], gzhs_list_data: [] },
+      show: true
     }
   },
   computed: {
     list() {
-      console.log(this.$store.state.aa, 'aa')
       return (this.gzh.gzhs_list_data = this.$store.state.ls);
     }
   },
   watch: {
     list(n, o) {
+      console.log(o)
       n = o;
     }
   },
   methods: {
     getArticleList(nickname) {
-      this.$socket.emit('emit_nickname', nickname)
+      this.$socket.emit('emit_nickname', nickname);
+      this.show = false
     }
   }
 }
@@ -89,10 +181,13 @@ export default {
 }
 .card {
   padding: 20px;
-  width: 260px;
+  width: 399px;
   border-radius: 12px;
   box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.11);
   background-color: rgb(52, 60, 67);
+}
+.articlecard {
+  position: relative;
 }
 .cardtitle {
   @mixin flexbox;
@@ -113,6 +208,17 @@ export default {
   padding-bottom: 30px;
   font-size: 24px;
   text-overflow: ellipsis;
+  color: #c5ced6;
+}
+.articlefooterwrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+.articlefooter {
+  @mixin flexbox;
+  justify-content: flex-start;
+  padding: 5px;
+  font-size: 16px;
   color: #c5ced6;
 }
 .cardfooter {
@@ -153,9 +259,26 @@ export default {
     border-bottom: 3px solid transparent;
   }
 }
+.articletextwrap {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 360px;
+  overflow: hidden;
+}
 .textwrap:hover {
   & .textbubble {
     opacity: 1;
   }
+}
+.icon {
+  @mixin svg;
+}
+.icon:hover {
+  fill: #fff;
+}
+.return {
+  position: fixed;
+  right: 30px;
+  top: 30px;
 }
 </style>
