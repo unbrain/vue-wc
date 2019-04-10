@@ -60,6 +60,7 @@
             <div
               v-text="item.title"
               :class="$style.articletextwrap"
+              @click="open(item.content_url)"
             ></div>
             <span
               :class="$style.textbubble"
@@ -129,6 +130,7 @@
 </template>
 
 <script>
+import { win32 } from 'path';
 export default {
   data() {
     return {
@@ -151,6 +153,9 @@ export default {
     getArticleList(nickname) {
       this.$socket.emit('emit_nickname', nickname);
       this.show = false
+    },
+    open(href){
+      window.open(href);
     }
   }
 }
