@@ -17,7 +17,10 @@
       >
         <div :class="$style.card">
           <div :class="$style.cardtitle">
-            <div :class="[$style.titlenum, $style.textwrap]">
+            <div
+              :class="[$style.titlenum, $style.textwrap]"
+              @click="getArticleList(item.nickname)"
+            >
               <div v-text="item.article_num"></div>
               <span :class="$style.textbubble">总计爬取文章数</span>
             </div>
@@ -29,7 +32,7 @@
           <div :class="[$style.cardbody, $style.textwrap]">
             <div
               v-text="item.nickname"
-              @click="getArticleList(item.nickname)"
+              @click="getReport(item.nickname)"
             ></div>
             <span :class="$style.textbubble">公众号名称</span>
           </div>
@@ -88,7 +91,7 @@
               >
                 <use xlink:href="#icon-money"></use>
               </svg>
-              <div v-text="item.reward_num"></div>
+              <div>{{item.reward_num | formatNum}}</div>
               <span :class="$style.textbubble">赞赏量</span>
             </div>
             <div :class="[$style.articlefooter, $style.textwrap]">
@@ -98,7 +101,7 @@
               >
                 <use xlink:href="#icon-comment"></use>
               </svg>
-              <div v-text="item.comment_num"></div>
+              <div>{{item.comment_num | formatNum}}</div>
               <span :class="$style.textbubble">评论量</span>
             </div>
             <div :class="[$style.articlefooter, $style.textwrap]">
@@ -111,7 +114,10 @@
               <div v-text="item.like_num"></div>
               <span :class="$style.textbubble">点赞量</span>
             </div>
-            <div :class="[$style.articlefooter, $style.textwrap]">
+            <div
+              :class="[$style.articlefooter, $style.textwrap]"
+              v-if="item.author"
+            >
               <svg
                 :class="{[$style.icon]:1,[$style.iconbig]:1}"
                 aria-hidden="true"
@@ -149,15 +155,26 @@ export default {
       n = o;
     }
   },
+  filters: {
+    formatNum(num) {
+      if (num < 0) {
+        return 0
+      }
+      return num
+    }
+  },
   methods: {
     getArticleList(nickname) {
       this.$socket.emit('emit_nickname', nickname);
       this.show = false
     },
-    open(href){
+    getReport(nickname) {
+      this.open(`http://localhost:5000/gzh_report/${nickname}`, '_blank');
+    },
+    open(href) {
       window.open(href);
     }
-  }
+  },
 }
 </script>
 

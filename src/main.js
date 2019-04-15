@@ -11,7 +11,8 @@ const store = new Vuex.Store({
   state: {
     count: 0,
     ls: {},
-    allArticles: {}
+    allArticles: {},
+    report: {}
   },
   actions: {
     SOCKET_gzhs_list_data(state, data) {
@@ -19,7 +20,11 @@ const store = new Vuex.Store({
     },
     SOCKET_gzhs_all_articles_data(state, data) {
       state.state.allArticles = data;
-    }
+    },
+    SOCKET_gzhs_report(state, data) {
+      state.state.report = data;
+    },
+
   }
 })
 Vue.use(new VueSocketIO({
