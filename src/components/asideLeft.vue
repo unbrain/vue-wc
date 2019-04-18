@@ -18,6 +18,7 @@
         :class="$style.controllericonwrap"
         v-for="(item, index) in controllerSvgDeatail"
         :key="index"
+        @click="clicksvg(item.message)"
       >
         <svg
           :class="$style.icon"
@@ -43,8 +44,19 @@ export default {
         { name: '#icon-clear', message: 'clear redis data' },
         { name: '#icon-switch', message: 'restart' }]
     }
+  },
+  methods: {
+    clicksvg(message) {
+      if (message === 'restart') {
+        this.$socket.emit(message);
+        location.reload();
+      } else if (message === 'search') {
+        window.open('http://localhost:5000/search', '_blank')
+      }
+
+    }
   }
-};
+}
 </script>
 
 <style lang="postcss" module>

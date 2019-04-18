@@ -127,6 +127,19 @@
               <div v-text="item.author"></div>
               <span :class="$style.textbubble">作者</span>
             </div>
+            <div
+              :class="[$style.articlefooter, $style.textwrap]"
+              v-if="item.upload_music[0]"
+              @click="music(item.upload_music[0])"
+            >
+              <svg
+                :class="{[$style.icon]:1,[$style.iconbig]:1}"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-Music"></use>
+              </svg>
+              <span :class="$style.textbubble">音乐</span>
+            </div>
           </div>
 
         </div>
@@ -173,6 +186,9 @@ export default {
     },
     open(href) {
       window.open(href);
+    },
+    music(href) {
+      window.open(href, '_blank');
     }
   },
 }
