@@ -71,77 +71,23 @@
             ></span>
           </div>
           <div :class="$style.articlefooterwrap">
-            <div :class="[$style.articlefooter, $style.textwrap]">
-
-            </div>
-            <div :class="[$style.articlefooter, $style.textwrap]">
-              <svg
-                :class="{[$style.icon]:1,[$style.iconbig]:1}"
-                aria-hidden="true"
-              >
-                <use xlink:href="#icon-look"></use>
-              </svg>
-              <div v-text="item.read_num"></div>
-              <span :class="$style.textbubble">阅读量</span>
-            </div>
-            <div :class="[$style.articlefooter, $style.textwrap]">
-              <svg
-                :class="{[$style.icon]:1,[$style.iconbig]:1}"
-                aria-hidden="true"
-              >
-                <use xlink:href="#icon-money"></use>
-              </svg>
-              <div>{{item.reward_num | formatNum}}</div>
-              <span :class="$style.textbubble">赞赏量</span>
-            </div>
-            <div :class="[$style.articlefooter, $style.textwrap]">
-              <svg
-                :class="{[$style.icon]:1,[$style.iconbig]:1}"
-                aria-hidden="true"
-              >
-                <use xlink:href="#icon-comment"></use>
-              </svg>
-              <div>{{item.comment_num | formatNum}}</div>
-              <span :class="$style.textbubble">评论量</span>
-            </div>
-            <div :class="[$style.articlefooter, $style.textwrap]">
-              <svg
-                :class="{[$style.icon]:1,[$style.iconbig]:1}"
-                aria-hidden="true"
-              >
-                <use xlink:href="#icon-like"></use>
-              </svg>
-              <div v-text="item.like_num"></div>
-              <span :class="$style.textbubble">点赞量</span>
-            </div>
             <div
               :class="[$style.articlefooter, $style.textwrap]"
-              v-if="item.author"
+              v-for="(dd,index) in bottomDetails"
+              @click="music(item.upload_music[0],dd[0])"
+              :key="index"
             >
               <svg
                 :class="{[$style.icon]:1,[$style.iconbig]:1}"
                 aria-hidden="true"
+                v-if="dd[0] !== '#icon-Music' || item.upload_music.length !== 0 "
               >
-                <use xlink:href="#icon-author"></use>
+                <use :xlink:href="dd[0]"></use>
               </svg>
-              <div v-text="item.author"></div>
-              <span :class="$style.textbubble">作者</span>
-            </div>
-            <div
-              :class="[$style.articlefooter, $style.textwrap]"
-              v-if="item.upload_music[0]"
-              @click="music(item.upload_music[0])"
-            >
-              <svg
-                :class="{[$style.icon]:1,[$style.iconbig]:1}"
-                aria-hidden="true"
-              >
-                <use xlink:href="#icon-Music"></use>
-              </svg>
-              <span :class="$style.textbubble">音乐</span>
+              <div>{{item[dd[1]] | formatNum}}</div>
+              <span :class="$style.textbubble">{{dd[2]}}</span>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -154,7 +100,15 @@ export default {
   data() {
     return {
       gzh: { gzh_all_article_data: [], gzhs_list_data: [] },
-      show: true
+      show: true,
+      bottomDetails: [
+        ['#icon-look', 'read_num', '阅读量'],
+        ['#icon-money', 'reward_num', '赞赏量'],
+        ['#icon-comment', 'comment_num', '评论量'],
+        ['#icon-like', 'like_num', '点赞量'],
+        ['#icon-author', 'author', '作者'],
+        ['#icon-Music', '', '音乐']
+      ]
     }
   },
   computed: {
@@ -187,8 +141,10 @@ export default {
     open(href) {
       window.open(href);
     },
-    music(href) {
-      window.open(href, '_blank');
+    music(href, icon) {
+      if (href && icon === '#icon-Music') {
+        window.open(href, '_blank');
+      }
     }
   },
 }
@@ -219,7 +175,7 @@ export default {
 }
 .card {
   padding: 20px;
-  width: 399px;
+  width: 299px;
   border-radius: 12px;
   box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.11);
   background-color: rgb(52, 60, 67);
